@@ -23,11 +23,9 @@ export default function ChatsListRow ({name, lastMessage, profilePicURL}: Props)
       </ListItemAvatar>
       <ListItemText 
         primary={name}
+        // TODO: make sure this doesn't go beyond one line in rendering
         secondary={lastMessage}
       />
-      <div>
-        {/* TODO: use MUI Material Icons */}
-      </div>
     </ListItem>
   )
 }
