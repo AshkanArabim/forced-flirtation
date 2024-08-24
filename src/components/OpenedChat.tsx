@@ -33,7 +33,7 @@ export default function OpenedChat({ name, profilePicURL }: Props) {
 			<Box
 				style={{
 					flex: "101",
-					overflow: "scroll",
+					overflow: "auto",
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end"

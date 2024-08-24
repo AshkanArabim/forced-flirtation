@@ -26,7 +26,7 @@ export default function Modal({ message, mainOption, otherOptions }: Props) {
 			<div
 				style={{
 					maxHeight: "100%",
-					overflow: "scroll",
+					overflow: "auto",
 				}}
 			>
 				{/* window, centered */}
