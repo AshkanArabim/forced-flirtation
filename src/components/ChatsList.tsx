@@ -59,11 +59,6 @@ export default function ChatsList() {
 				</Box>
 			)}
 
-			{/* new chat button */}
-			<Fab color="primary" sx={{ position: "fixed", bottom: 20, right: 20 }}>
-				<Add />
-			</Fab>
-
 			{/* footer */}
 			<div
 				style={{
@@ -72,6 +67,11 @@ export default function ChatsList() {
 			>
 				<p style={{textAlign: 'center'}}>Source code found <a href="https://github.com/AshkanArabim/forced-flirtation">here</a></p>
 			</div>
+
+			{/* new chat button */}
+			<Fab color="primary" sx={{ position: "absolute", zIndex: 1, bottom: 20, right: 20 }}>
+				<Add />
+			</Fab>
 		</div>
 	);
 }
