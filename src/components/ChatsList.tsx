@@ -28,7 +28,9 @@ export default function ChatsList() {
 
 			{/* render list of chats, or show "no messages yet" */}
 			{chats.length > 0 ? (
-				<List disablePadding={true}>
+				<List disablePadding={true} style={{
+					flex: "100",
+				}}>
 					{chats.map((row) => (
 						<>
 							<ChatsListRow
