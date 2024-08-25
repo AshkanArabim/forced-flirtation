@@ -12,7 +12,10 @@ export default function Modal({ message, mainOption, otherOptions }: Props) {
 		// backdrop; covers whole screen
 		<div
 			style={{
-				position: "fixed",
+				position: "absolute",
+        top: "0",
+        left: '0',
+        zIndex: 10,
 				width: "100vw",
 				height: "100vh",
 				backgroundColor: "rgba(0, 0, 0, 0.3)",
