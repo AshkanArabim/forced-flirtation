@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Chat from "./chat.model";
 
 const userSchema: mongoose.Schema = new mongoose.Schema({
 	username: {
@@ -18,7 +17,16 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	chats: [Chat],
+	chats: {
+		type: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Chat",
+			},
+		],
+		required: true,
+		default: [],
+	},
 });
 
 export default mongoose.model("User", userSchema);

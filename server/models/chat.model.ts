@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
-import User from "./user.model";
 
-const messageSchema = new mongoose.Schema({
+const messageSchema: mongoose.Schema = new mongoose.Schema({
 	UTCTimestamp: {
 		type: Date,
 		required: true,
 		default: Date.now,
 	},
 	sender: {
-		type: User,
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User",
 		required: true,
 	},
 	text: {
@@ -17,12 +17,17 @@ const messageSchema = new mongoose.Schema({
 	},
 });
 
-const chatSchema = new mongoose.Schema({
+const chatSchema: mongoose.Schema = new mongoose.Schema({
 	participants: {
-		type: [User],
-		required: true,
+		type: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "User",
+			},
+		],
+		required: true, // no default
 	},
-	messages: [messageSchema],
+	messages: { type: [messageSchema], required: true, default: [] },
 });
 
 export default mongoose.model("Chat", chatSchema);
