@@ -1,12 +1,16 @@
 import express from "express";
 import mongoose from "mongoose";
-import apiRouter from "./routes/api.route"
+import apiRouter from "./routes/api.route";
 
 const app = express();
-const PORT = 3001
+const PORT = 3001;
+
+// middleware
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 // add API router
-app.use("/api", apiRouter)
+app.use("/api", apiRouter);
 
 // connect to mongo, then start express
 mongoose
