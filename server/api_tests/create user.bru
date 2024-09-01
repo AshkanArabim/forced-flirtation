@@ -1,0 +1,19 @@
+meta {
+  name: create user
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3001/api/createUser
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "AshkanArabim",
+    "email": "ashkan.arabim@gmail.com",
+    "password": "bruh"
+  }
+}
