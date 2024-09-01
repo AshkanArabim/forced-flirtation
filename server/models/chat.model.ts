@@ -1,0 +1,28 @@
+import mongoose from 'mongoose'
+import User from './user.model'
+
+const MessageSchema = new mongoose.Schema({
+	UTCTimestamp: {
+		type: Date,
+		required: true,
+		default: Date.now,
+	},
+  sender: {
+    type: User,
+    required: true
+  },
+  text: {
+    type: String,
+    required: true
+  }
+});
+
+const ChatSchema = new mongoose.Schema({
+  participants: {
+    type: [User],
+    required: true
+  },
+  messages: [MessageSchema]
+})
+
+export default mongoose.model("Chat", ChatSchema)
