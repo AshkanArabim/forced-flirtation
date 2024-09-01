@@ -4,6 +4,7 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
 	username: {
 		type: String,
 		required: true,
+    default: "", // will use email as username if not provided
 	},
 	email: {
 		type: String,
@@ -12,6 +13,7 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
 	profilePicURL: {
 		type: String,
 		required: true,
+		default: "",
 	},
 	password: {
 		type: String,
