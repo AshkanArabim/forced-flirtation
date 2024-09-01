@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const messageSchema: mongoose.Schema = new mongoose.Schema({
 	UTCTimestamp: {
 		type: Date,
-		required: true,
 		default: Date.now,
 	},
 	sender: {
@@ -27,7 +26,7 @@ const chatSchema: mongoose.Schema = new mongoose.Schema({
 		],
 		required: true, // no default
 	},
-	messages: { type: [messageSchema], required: true, default: [] },
+	messages: { type: [messageSchema], default: [] },
 });
 
 export default mongoose.model("Chat", chatSchema);

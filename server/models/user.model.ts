@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 const userSchema: mongoose.Schema = new mongoose.Schema({
 	username: {
 		type: String,
-		required: true,
-    default: "", // will use email as username if not provided
+		default: "", // will use email as username if not provided
 	},
 	email: {
 		type: String,
@@ -12,7 +11,6 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
 	},
 	profilePicURL: {
 		type: String,
-		required: true,
 		default: "",
 	},
 	password: {
@@ -26,7 +24,6 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
 				ref: "Chat",
 			},
 		],
-		required: true,
 		default: [],
 	},
 });
