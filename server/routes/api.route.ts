@@ -6,7 +6,7 @@ const router = express.Router();
 
 // TODO: refactor to reduce duplication
 
-router.get("/getUsers", async (req, res) => {
+router.get("/users", async (req, res) => {
 	try {
 		const users = await User.find({});
 		res.status(200).json(users);
@@ -17,7 +17,7 @@ router.get("/getUsers", async (req, res) => {
 	}
 });
 
-router.get("/getUserById/:id", async (req, res) => {
+router.get("/users/:id", async (req, res) => {
 	try {
 		const { id } = req.params;
 		const user = await User.findById(id);
@@ -30,7 +30,7 @@ router.get("/getUserById/:id", async (req, res) => {
 	}
 });
 
-router.post("/createUser", async (req, res) => {
+router.post("/users", async (req, res) => {
 	try {
 		const user = await User.create(req.body);
 		res.status(200).json(user);
@@ -41,7 +41,7 @@ router.post("/createUser", async (req, res) => {
 	}
 });
 
-router.get("/getChatById/:id", async (req, res) => {
+router.get("/chats/:id", async (req, res) => {
 	try {
 		const { id } = req.params;
 		const chat = await Chat.findById(id);
@@ -53,7 +53,7 @@ router.get("/getChatById/:id", async (req, res) => {
 	}
 });
 
-router.post("/createChat", async (req, res) => {
+router.post("/chats", async (req, res) => {
 	try {
 		const chat = await Chat.create(req.body);
 		res.status(200).json(chat);
