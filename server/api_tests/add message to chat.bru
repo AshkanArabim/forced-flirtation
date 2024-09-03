@@ -1,0 +1,18 @@
+meta {
+  name: add message to chat
+  type: http
+  seq: 8
+}
+
+post {
+  url: http://localhost:3001/api/chats/66d4d7cb099beaa600f4c022/messages
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "sender": "66d4d4e1dedeadc315b62973",
+    "text": "ey yooooooo"
+  }
+}

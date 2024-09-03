@@ -41,6 +41,48 @@ router.post("/users", async (req, res) => {
 	}
 });
 
+// user `patch` api
+router.patch("/users/:id", async (req, res) => {
+	try {
+		const updatedUser = await User.findByIdAndUpdate(
+			req.params.id,
+			{ $set: req.body },
+			{ runValidators: true, new: true }
+		);
+
+		if (!updatedUser) {
+			const msg = `user with id ${req.params.id} not found.`;
+			console.log(msg);
+			return res.status(404).json({ message: msg });
+		}
+
+		res.status(200).json(updatedUser);
+	} catch (error: any) {
+		const msg = `failed to update user: ${error.message}`;
+		console.log(msg);
+		res.status(500).json({ message: msg });
+	}
+});
+
+// user `delete` api
+router.delete("/users/:id", async (req, res) => {
+	try {
+		const deletedUser = await User.findByIdAndDelete(req.params.id);
+
+		if (!deletedUser) {
+			const msg = `User with id ${req.params.id} not found!`;
+			console.log(msg);
+			return res.status(404).json({ message: msg });
+		}
+
+		res.status(200).json(deletedUser);
+	} catch (error: any) {
+		const msg = `failed to delete user: ${error.message}`;
+		console.log(msg);
+		res.status(500).json({ message: msg });
+	}
+});
+
 router.get("/chats/:id", async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -63,6 +105,73 @@ router.post("/chats", async (req, res) => {
 		res.status(500).json({ message: msg });
 	}
 });
+
+// chat `post` message adding api
+router.post("/chats/:id/messages", async (req, res) => {
+	try {
+		const chat = await Chat.findByIdAndUpdate(
+			req.params.id,
+			{ $push: { messages: req.body } },
+			{ new: true, runValidators: true }
+		);
+
+		if (!chat) {
+			const msg = `chat with id ${req.params.id} not found!`;
+			console.log(msg);
+			return res.status(404).json({ message: msg });
+		}
+
+		res.status(200).json(chat);
+	} catch (error: any) {
+		const msg = `failed to add message to chat: ${error.message}`;
+		console.log(msg);
+		res.status(500).json({ message: msg });
+	}
+});
+
+// chat `patch` api
+router.patch("/chats/:id", async (req, res) => {
+	try {
+		const chat = await Chat.findByIdAndUpdate(
+			req.params.id,
+			{ $set: req.body },
+			{ runValidators: true, new: true }
+		);
+
+		if (!chat) {
+			const msg = `chat with id ${req.params.id} not found!`;
+			console.log(msg);
+			return res.status(404).json({ message: msg });
+		}
+
+		res.status(200).json(chat);
+	} catch (error: any) {
+		const msg = `couldn't update chat: ${error.message}`;
+		console.log(msg);
+		res.status(500).json({ message: msg });
+	}
+});
+
+// chat `delete` api
+router.delete("/chats/:id", async (req, res) => {
+	try {
+		const chat = await Chat.findByIdAndDelete(req.params.id);
+
+		if (!chat) {
+			const msg = `chat with id ${req.params.id} not found!`;
+			console.log(msg);
+			return res.status(404).json({ message: msg });
+		}
+
+		res.status(200).json(chat);
+	} catch (error: any) {
+		const msg = `couldn't delete chat: ${error.message}`;
+		console.log(msg);
+		res.status(500).json({ message: msg });
+	}
+});
+
+// TODO: complex logic:
 
 // delete logic
 // make sure to unsubscribe other user as well

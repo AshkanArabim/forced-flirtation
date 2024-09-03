@@ -1,0 +1,17 @@
+meta {
+  name: patch user
+  type: http
+  seq: 6
+}
+
+patch {
+  url: http://localhost:3001/api/users/66cd00ec9034b1b4be5e739c
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "AshkanBruh"
+  }
+}
