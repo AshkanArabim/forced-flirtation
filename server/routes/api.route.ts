@@ -1,7 +1,7 @@
 import express from "express";
-import { userModel, User} from "../models/user.model";
-import {chatModel, Chat} from "../models/chat.model";
-import {messageModel, Message} from "../models/message.model";
+import { userModel, User } from "../models/user.model";
+import { chatModel, Chat } from "../models/chat.model";
+import { messageModel, Message } from "../models/message.model";
 
 const router = express.Router();
 
@@ -131,10 +131,10 @@ router.post("/chats", async (req, res) => {
 
 // chat `post` message adding api
 // note: processed till here ^^
-router.post("/chats/:chatId/messages", async (req: {body: Message, params: any}, res) => {
+router.post("/chats/:chatId/messages", async (req: { body: Message; params: any }, res) => {
 	try {
 		// find the user object (to copy its basic info to the message)
-		const user: User | null = await userModel.findById(req.body.senderRef)
+		const user: User | null = await userModel.findById(req.body.senderRef);
 
 		if (!user) {
 			const msg = `user with id ${req.body.senderRef} not found!`;
@@ -148,7 +148,7 @@ router.post("/chats/:chatId/messages", async (req: {body: Message, params: any},
 		newMessageJSON.senderProfilePicURL = user.profilePicURL;
 
 		// create the message entry in the db
-		const newMessage = await messageModel.create(newMessageJSON)
+		const newMessage = await messageModel.create(newMessageJSON);
 
 		// push the message id to the chat
 		const chat = await chatModel.findByIdAndUpdate(
@@ -215,14 +215,14 @@ router.delete("/chats/:id", async (req, res) => {
 
 router.get("/messages/:messageId", async (req, res) => {
 	try {
-		const message = await messageModel.findById(req.params.messageId)
-		res.status(200).json(message)
+		const message = await messageModel.findById(req.params.messageId);
+		res.status(200).json(message);
 	} catch (error: any) {
 		const msg = `failed to get message: ${error.message}`;
 		console.log(msg);
 		res.status(500).json({ message: msg });
 	}
-})
+});
 
 // TODO: complex logic:
 
