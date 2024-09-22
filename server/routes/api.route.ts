@@ -5,11 +5,16 @@ import Chat from "../models/chat.model";
 const router = express.Router();
 
 // TODO: refactor to reduce duplication
-
+// note: user responses exclude the following fields:
+	// password
 router.get("/users", async (req, res) => {
 	try {
 		const users = await User.find({});
-		res.status(200).json(users);
+		const filteredUsers = users.map(user => {
+			const { password, ...userWithoutPassword } = user.toObject();
+			return userWithoutPassword;
+		});
+		res.status(200).json(filteredUsers);
 	} catch (error: any) {
 		const msg = `failed to get users: ${error.message}`;
 		console.log(msg);
@@ -28,7 +33,8 @@ router.get("/users/:id", async (req, res) => {
 			return res.status(404).json({ message: msg });
 		}
 
-		res.status(200).json(user);
+		const { password, ...userWithoutPassword } = user.toObject();
+		res.status(200).json(userWithoutPassword);
 	} catch (error: any) {
 		const msg = `failed to get user: ${error.message}`;
 		console.log(msg);
@@ -39,7 +45,8 @@ router.get("/users/:id", async (req, res) => {
 router.post("/users", async (req, res) => {
 	try {
 		const user = await User.create(req.body);
-		res.status(200).json(user);
+		const { password, ...userWithoutPassword } = user.toObject();
+		res.status(200).json(userWithoutPassword);
 	} catch (error: any) {
 		const msg = `failed to create user: ${error.message}`;
 		console.log(msg);
@@ -62,7 +69,8 @@ router.patch("/users/:id", async (req, res) => {
 			return res.status(404).json({ message: msg });
 		}
 
-		res.status(200).json(updatedUser);
+		const { password, ...userWithoutPassword } = updatedUser.toObject();
+		res.status(200).json(userWithoutPassword);
 	} catch (error: any) {
 		const msg = `failed to update user: ${error.message}`;
 		console.log(msg);
@@ -81,7 +89,8 @@ router.delete("/users/:id", async (req, res) => {
 			return res.status(404).json({ message: msg });
 		}
 
-		res.status(200).json(deletedUser);
+		const { password, ...userWithoutPassword } = deletedUser.toObject();
+		res.status(200).json(userWithoutPassword);
 	} catch (error: any) {
 		const msg = `failed to delete user: ${error.message}`;
 		console.log(msg);
