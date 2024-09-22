@@ -1,16 +1,17 @@
 import express from "express";
-import User from "../models/user.model";
-import Chat from "../models/chat.model";
+import { userModel, User} from "../models/user.model";
+import {chatModel, Chat} from "../models/chat.model";
+import {messageModel, Message} from "../models/message.model";
 
 const router = express.Router();
 
 // TODO: refactor to reduce duplication
-// note: user responses exclude the following fields:
-	// password
+// user responses exclude the following fields:
+// password
 router.get("/users", async (req, res) => {
 	try {
-		const users = await User.find({});
-		const filteredUsers = users.map(user => {
+		const users = await userModel.find({});
+		const filteredUsers = users.map((user) => {
 			const { password, ...userWithoutPassword } = user.toObject();
 			return userWithoutPassword;
 		});
@@ -25,7 +26,7 @@ router.get("/users", async (req, res) => {
 router.get("/users/:id", async (req, res) => {
 	try {
 		const { id } = req.params;
-		const user = await User.findById(id);
+		const user = await userModel.findById(id);
 
 		if (!user) {
 			const msg = `user with id ${id} not found`;
@@ -44,7 +45,7 @@ router.get("/users/:id", async (req, res) => {
 
 router.post("/users", async (req, res) => {
 	try {
-		const user = await User.create(req.body);
+		const user = await userModel.create(req.body);
 		const { password, ...userWithoutPassword } = user.toObject();
 		res.status(200).json(userWithoutPassword);
 	} catch (error: any) {
@@ -57,7 +58,7 @@ router.post("/users", async (req, res) => {
 // user `patch` api
 router.patch("/users/:id", async (req, res) => {
 	try {
-		const updatedUser = await User.findByIdAndUpdate(
+		const updatedUser = await userModel.findByIdAndUpdate(
 			req.params.id,
 			{ $set: req.body },
 			{ runValidators: true, new: true }
@@ -81,7 +82,7 @@ router.patch("/users/:id", async (req, res) => {
 // user `delete` api
 router.delete("/users/:id", async (req, res) => {
 	try {
-		const deletedUser = await User.findByIdAndDelete(req.params.id);
+		const deletedUser = await userModel.findByIdAndDelete(req.params.id);
 
 		if (!deletedUser) {
 			const msg = `User with id ${req.params.id} not found!`;
@@ -101,7 +102,7 @@ router.delete("/users/:id", async (req, res) => {
 router.get("/chats/:id", async (req, res) => {
 	try {
 		const { id } = req.params;
-		const chat = await Chat.findById(id);
+		const chat = await chatModel.findById(id);
 
 		if (!chat) {
 			const msg = `can't find chat with id ${id}`;
@@ -119,7 +120,7 @@ router.get("/chats/:id", async (req, res) => {
 
 router.post("/chats", async (req, res) => {
 	try {
-		const chat = await Chat.create(req.body);
+		const chat = await chatModel.create(req.body);
 		res.status(200).json(chat);
 	} catch (error: any) {
 		const msg = `failed to create chat: ${error.message}`;
@@ -129,16 +130,35 @@ router.post("/chats", async (req, res) => {
 });
 
 // chat `post` message adding api
-router.post("/chats/:id/messages", async (req, res) => {
+// note: processed till here ^^
+router.post("/chats/:chatId/messages", async (req: {body: Message, params: any}, res) => {
 	try {
-		const chat = await Chat.findByIdAndUpdate(
-			req.params.id,
-			{ $push: { messages: req.body } },
+		// find the user object (to copy its basic info to the message)
+		const user: User | null = await userModel.findById(req.body.senderRef)
+
+		if (!user) {
+			const msg = `user with id ${req.body.senderRef} not found!`;
+			console.log(msg);
+			return res.status(404).json({ message: msg });
+		}
+
+		// add the info to the message object
+		let newMessageJSON = req.body;
+		newMessageJSON.senderUsername = user.username ? user.username : user.email;
+		newMessageJSON.senderProfilePicURL = user.profilePicURL;
+
+		// create the message entry in the db
+		const newMessage = await messageModel.create(newMessageJSON)
+
+		// push the message id to the chat
+		const chat = await chatModel.findByIdAndUpdate(
+			req.params.chatId,
+			{ $push: { messages: newMessage._id } },
 			{ new: true, runValidators: true }
 		);
 
 		if (!chat) {
-			const msg = `chat with id ${req.params.id} not found!`;
+			const msg = `chat with id ${req.params.chatId} not found!`;
 			console.log(msg);
 			return res.status(404).json({ message: msg });
 		}
@@ -154,7 +174,7 @@ router.post("/chats/:id/messages", async (req, res) => {
 // chat `patch` api
 router.patch("/chats/:id", async (req, res) => {
 	try {
-		const chat = await Chat.findByIdAndUpdate(
+		const chat = await chatModel.findByIdAndUpdate(
 			req.params.id,
 			{ $set: req.body },
 			{ runValidators: true, new: true }
@@ -177,7 +197,7 @@ router.patch("/chats/:id", async (req, res) => {
 // chat `delete` api
 router.delete("/chats/:id", async (req, res) => {
 	try {
-		const chat = await Chat.findByIdAndDelete(req.params.id);
+		const chat = await chatModel.findByIdAndDelete(req.params.id);
 
 		if (!chat) {
 			const msg = `chat with id ${req.params.id} not found!`;

@@ -1,21 +1,5 @@
 import mongoose from "mongoose";
 
-const messageSchema: mongoose.Schema = new mongoose.Schema({
-	UTCTimestamp: {
-		type: Date,
-		default: Date.now,
-	},
-	sender: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "User",
-		required: true,
-	},
-	text: {
-		type: String,
-		required: true,
-	},
-});
-
 const chatSchema: mongoose.Schema = new mongoose.Schema({
 	participants: {
 		type: [
@@ -26,7 +10,21 @@ const chatSchema: mongoose.Schema = new mongoose.Schema({
 		],
 		required: true, // no default
 	},
-	messages: { type: [messageSchema], default: [] },
+	messages: {
+		type: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Message",
+			},
+		],
+		required: true,
+		default: [],
+	},
 });
 
-export default mongoose.model("Chat", chatSchema);
+export const chatModel = mongoose.model("Chat", chatSchema);
+
+export interface Chat {
+	participants: string[] | undefined,
+	messages: string[] | undefined
+}

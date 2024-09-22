@@ -28,4 +28,12 @@ const userSchema: mongoose.Schema = new mongoose.Schema({
 	},
 });
 
-export default mongoose.model("User", userSchema);
+export const userModel = mongoose.model("User", userSchema);
+
+export interface User {
+	username: string | undefined,
+	email: string,
+	profilePicURL: string | undefined,
+	password: string,
+	chats: string[]
+}
