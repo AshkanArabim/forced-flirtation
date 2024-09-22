@@ -213,6 +213,17 @@ router.delete("/chats/:id", async (req, res) => {
 	}
 });
 
+router.get("/messages/:messageId", async (req, res) => {
+	try {
+		const message = await messageModel.findById(req.params.messageId)
+		res.status(200).json(message)
+	} catch (error: any) {
+		const msg = `failed to get message: ${error.message}`;
+		console.log(msg);
+		res.status(500).json({ message: msg });
+	}
+})
+
 // TODO: complex logic:
 
 // delete logic
