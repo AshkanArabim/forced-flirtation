@@ -22,11 +22,11 @@ router.get("/users/:id", async (req, res) => {
 		const { id } = req.params;
 		const user = await User.findById(id);
 
-    if (!user) {
-      const msg = `user with id ${id} not found`
-      console.log(msg)
-      return res.status(404).json({message: msg})
-    }
+		if (!user) {
+			const msg = `user with id ${id} not found`;
+			console.log(msg);
+			return res.status(404).json({ message: msg });
+		}
 
 		res.status(200).json(user);
 	} catch (error: any) {
@@ -94,11 +94,11 @@ router.get("/chats/:id", async (req, res) => {
 		const { id } = req.params;
 		const chat = await Chat.findById(id);
 
-    if (!chat) {
-      const msg = `can't find chat with id ${id}`
-      console.log(msg)
-      return res.status(404).json({message: msg})
-    }
+		if (!chat) {
+			const msg = `can't find chat with id ${id}`;
+			console.log(msg);
+			return res.status(404).json({ message: msg });
+		}
 
 		res.status(200).json(chat);
 	} catch (error: any) {
