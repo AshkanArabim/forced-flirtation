@@ -9,16 +9,13 @@ const initialState: State = {
 	error: null,
 };
 
-// TODO: remove this later
-// interface loadPayload {
-//   i: number,
-//   l: number
-// }
-
 export const currentChatsSlice = createSlice({
 	name: "currentChats",
 	initialState: initialState,
 	reducers: {
+		resetChats() {
+			return initialState;
+		},
 		fetchChatsStart() {
 			return {
 				data: null,
