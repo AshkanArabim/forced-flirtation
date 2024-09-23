@@ -1,14 +1,16 @@
-import { currentUserSlice } from './slices/currentUserSlice'
+import { currentUserSlice } from "./slices/currentUserSlice";
 import { currentChatsSlice } from "./slices/currentChatsSlice";
 // import { currentMessagesSlice } from './slices/currentMessagesSlice'
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { activeChatSlice } from "./slices/activeChatSlice";
 
 export const store = configureStore({
 	reducer: {
 		currentUser: currentUserSlice.reducer,
-		currentChat: currentChatsSlice.reducer,
-		// currentMessage: currentMessagesSlice.reducer
+		currentChats: currentChatsSlice.reducer,
+		activeChat: activeChatSlice.reducer,
+		// currentMessages: currentMessagesSlice.reducer
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
