@@ -13,6 +13,7 @@ export const fetchChats = (i: number, l: number) => {
 		const currentAsyncUser = (store.getState() as RootState).currentUser as AsyncState<User | null>;
 		if (currentAsyncUser.data === null) {
 			dispatch(fetchChatsFailure("can't get chats when no user is logged in!"));
+			return;
 		}
 
 		const currentUser: User = currentAsyncUser.data as User;
