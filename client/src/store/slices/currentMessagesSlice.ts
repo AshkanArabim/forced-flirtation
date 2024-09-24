@@ -39,5 +39,5 @@ export const currentMessagesSlice = createSlice({
 	},
 });
 
-export const { fetchMessagesStart, fetchMessagesFailure, fetchMessagesSuccess } =
+export const { fetchMessagesStart, fetchMessagesFailure, fetchMessagesSuccess, resetMessages } =
 	currentMessagesSlice.actions;

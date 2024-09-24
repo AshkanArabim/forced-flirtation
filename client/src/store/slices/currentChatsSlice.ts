@@ -36,4 +36,5 @@ export const currentChatsSlice = createSlice({
 	},
 });
 
-export const { fetchChatsFailure, fetchChatsStart, fetchChatsSuccess } = currentChatsSlice.actions;
+export const { fetchChatsFailure, fetchChatsStart, fetchChatsSuccess, resetChats } =
+	currentChatsSlice.actions;

@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User, AsyncState } from "../../interfaces";
+import { unsetActiveChat } from "./activeChatSlice";
+import { resetMessages } from "./currentMessagesSlice";
+import { resetChats } from "./currentChatsSlice";
+import { store } from "../store";
 
 type State = AsyncState<User | null>;
 
@@ -17,6 +21,9 @@ export const currentUserSlice = createSlice({
 			state.data = action.payload;
 		},
 		unsetUser() {
+			store.dispatch(unsetActiveChat());
+			store.dispatch(resetMessages());
+			store.dispatch(resetChats());
 			return initialState;
 		},
 	},
