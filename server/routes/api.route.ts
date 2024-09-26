@@ -2,8 +2,38 @@ import express from "express";
 import { userModel, User } from "../models/user.model";
 import { chatModel, Chat } from "../models/chat.model";
 import { messageModel, Message } from "../models/message.model";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
+
+router.post("/login", async (req, res) => {
+	try {
+		// see if username & password combo exists --> mongo query
+		const user: User | null = await userModel.findOne({
+			username: req.body.username,
+			password: req.body.password,
+		});
+
+		if (!user) {
+			return res.status(401).json({ message: "Invalid username or password" });
+		}
+
+		const { password, ...userWithoutPassword } = user;
+
+		// create authentication token
+		const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "default_secret";
+		const accessToken = jwt.sign(userWithoutPassword, accessTokenSecret);
+		res.json({ accessToken: accessToken });
+	} catch (error: any) {
+		const msg = `can't log in: ${error.message}`;
+		console.log(msg);
+		return res.status(500).json({ message: msg });
+	}
+});
+
+// TODO: major security flaw - authentication is based on ID, so technically
+// someone could just monitor the calls made by the program and fetch all the
+// user's info.
 
 // TODO: refactor to reduce duplication
 // user responses exclude the following fields:
@@ -130,7 +160,6 @@ router.post("/chats", async (req, res) => {
 });
 
 // chat `post` message adding api
-// note: processed till here ^^
 router.post("/chats/:chatId/messages", async (req: { body: Message; params: any }, res) => {
 	try {
 		// find the user object (to copy its basic info to the message)
